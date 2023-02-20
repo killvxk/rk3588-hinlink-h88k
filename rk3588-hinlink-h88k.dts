@@ -19,7 +19,7 @@
 
 / {
 	model = "HINLINK RK3588 OWL H88K Android Board";
-	compatible = "hinlink,rk3588-hinlink-h88ktv", "rockchip,rk3588";
+	compatible = "hinlink,rk3588-hinlink-h88k", "rockchip,rk3588";
 	/* If hdmirx node is disabled, delete the reserved-memory node here. */
 	reserved-memory {
 		#address-cells = <2>;
@@ -593,6 +593,16 @@
 		compatible = "ethernet-phy-ieee802.3-c22";
 		reg = <0x1>;
 	};
+};
+
+&pcie2x1l0 {
+	reset-gpios = <&gpio0 RK_PB0 GPIO_ACTIVE_HIGH>;
+	status = "okay";
+};
+
+&pcie2x1l1 {
+	reset-gpios = <&gpio4 RK_PA2 GPIO_ACTIVE_HIGH>;
+	status = "okay";
 };
 
 &pcie3x4 {
