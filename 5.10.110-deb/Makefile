@@ -1,52 +1,29 @@
+ccflags-y += -g -Wno-incompatible-pointer-types -Wno-unused-variable
+#ccflags-y += -DCONFIG_MHI_NETDEV_MBIM
+#obj-${CONFIG_PCIE_MHI} := fibo_mhi.o
+obj-m := fibo_mhi.o
+fibo_mhi-objs := core/mhi_init.o core/mhi_main.o core/mhi_pm.o core/mhi_boot.o core/mhi_dtr.o devices/mhi_netdev.o devices/mhi_uci.o controllers/mhi_qcom.o
+
+PWD := $(shell pwd)
+ifeq ($(ARCH),)
+ARCH := $(shell uname -m)
+endif
+ifeq ($(CROSS_COMPILE),)
+CROSS_COMPILE :=
+endif
+ifeq ($(KDIR),)
+KDIR := /lib/modules/$(shell uname -r)/build
+endif
 
 
-CC = gcc
-CFLAGS = -c -O2 -g
+fibo_mhi: clean
+ifeq ($(findstring 86,$(ARCH)), 86)
+	cp -f $(PWD)/controllers/mhi_qcom_x86.h $(PWD)/controllers/mhi_qcom.h
+else
+	cp -f $(PWD)/controllers/mhi_qcom_arm.h $(PWD)/controllers/mhi_qcom.h
+endif
+	#ln -sf makefile Makefile
+	$(MAKE) ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} -C $(KDIR) M=$(PWD) modules
 
-MAIN_DIR = .
-TARGET_BIN_DIR = $(MAIN_DIR)
-TARGET_OBJ_DIR = $(MAIN_DIR)
-
-BIN_NAME  = diaggrabpro
-
-DIAGGRABPRO_DIR = $(MAIN_DIR)
-
-SRC_DIR = $(DIAGGRABPRO_DIR)
-
-INCLUDE_PREFIX = -I
-
-ALL_PATHS= $(SRC_DIR)
-
-ALL_INCLUDES = $(addprefix $(INCLUDE_PREFIX), $(ALL_PATHS))
-
-OBJ_CMD = -o
-
-LD_CMD = -o
-
-LD_LIBRARY = -lpthread
-LD_LIBLRT = -lrt
-
-DIAGGRABPRO_OBJS =$(TARGET_OBJ_DIR)/diaggrabpro.o $(TARGET_OBJ_DIR)/ftp_client.o  $(TARGET_OBJ_DIR)/mdm.o
-
-			   
-BIN_OBJS = $(DIAGGRABPRO_OBJS)
-
-$(TARGET_OBJ_DIR)/%.o:$(DIAGGRABPRO_DIR)/%.c
-	@echo ---------------------------------------------------------
-	@echo Build OBJECT $(@) from SOURCE $<
-	@$(CC) $(CFLAGS) $(ALL_INCLUDES) $(OBJ_CMD) $@ $<
-	@echo ---------------------------------------------------------
-
-.PHONY: all clean
-
-all:bin
-
-bin:$(BIN_OBJS)
-	@echo ---------------------------------------------------------
-	@echo Create bin file $(BIN_NAME)
-	@$(CC) $(LD_CMD) $(TARGET_BIN_DIR)/$(BIN_NAME) $^ $(LD_LIBRARY) $(LD_LIBLRT)
-	@echo ---------------------------------------------------------
-	
 clean:
-	@rm -fr $(BIN_OBJS) $(BIN_NAME)
-	
+	$(MAKE) ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} -C $(KDIR) M=$(PWD) clean
