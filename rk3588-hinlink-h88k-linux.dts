@@ -159,6 +159,35 @@
 		pinctrl-0 = <&vcc5v0_otg_en>;
 	};
 
+	modem_enable: modem-enable {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		regulator-always-on;
+		regulator-boot-on;
+		gpios = <&gpio4 RK_PC6 GPIO_ACTIVE_HIGH>;
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-name = "modem-enable";
+		vin-supply = <&vcc_3v3_s3>;
+		startup-delay-us = <500000>;
+		pinctrl-names = "default";
+		pintctrl-0 = <&modem_reset_en>;
+	};
+
+	vcc3v3_modem: vcc3v3-modem {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		regulator-always-on;
+		regulator-boot-on;
+		gpios = <&gpio4 RK_PA3 GPIO_ACTIVE_HIGH>;
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-name = "vcc3v3_modem";
+		pinctrl-names = "default";
+		pintctrl-0 = <&modem_power_en>;
+		vin-supply = <&vcc_3v3_s3>;
+	};
+
 	pcie20_avdd0v85: pcie20-avdd0v85 {
 		compatible = "regulator-fixed";
 		regulator-name = "pcie20_avdd0v85";
