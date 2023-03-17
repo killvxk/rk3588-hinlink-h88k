@@ -66,6 +66,13 @@
 		      <0x0 0xfd12f000 0x0 0x1000>;
 	};
 
+	ir-receiver {
+		compatible = "gpio-ir-receiver";
+		gpios = <&gpio0 RK_PD4 GPIO_ACTIVE_LOW>;
+		pinctrl-0 = <&ir_int_pin>;
+		pinctrl-names = "default";
+	};
+
 	leds {
 		compatible = "gpio-leds";
 		pinctrl-names = "default";
@@ -782,7 +789,17 @@
 	status = "okay";
 };
 
+&u2phy0_otg {
+	vbus-supply = <&vcc5v0_usb_otg>;
+	status = "okay";
+};
+
 &u2phy1 {
+	status = "okay";
+};
+
+&u2phy1_otg {
+	phy-supply = <&vcc5v0_usb_host>;
 	status = "okay";
 };
 
@@ -790,27 +807,15 @@
 	status = "okay";
 };
 
+&u2phy2_host {
+	status = "okay";
+};
+
 &u2phy3 {
 	status = "okay";
 };
 
-&u2phy0_otg {
-	vbus-supply = <&vcc5v0_otg>;
-	status = "okay";
-};
-
-&u2phy1_otg {
-	phy-supply = <&vcc5v0_host>;
-	status = "okay";
-};
-
-&u2phy2_host {
-	phy-supply = <&vcc5v0_host>;
-	status = "okay";
-};
-
 &u2phy3_host {
-	phy-supply = <&vcc5v0_host>;
 	status = "okay";
 };
 
@@ -831,8 +836,26 @@
 };
 
 &usbdp_phy0 {
-	rockchip,dp-lane-mux = < 2 3 >;
+	orientation-switch;
+	rockchip,dp-lane-mux = < 0 1 2 3 >;
+	sbu1-dc-gpios = <&gpio0 RK_PC6 GPIO_ACTIVE_HIGH>;
+	sbu2-dc-gpios = <&gpio0 RK_PD3 GPIO_ACTIVE_HIGH>;
+	svid = <0xff01>;
 	status = "okay";
+
+	port {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		usbdp_phy0_orientation_switch: endpoint@0 {
+			reg = <0>;
+			remote-endpoint = <&usbc0_orien_sw>;
+		};
+
+		usbdp_phy0_dp_altmode_mux: endpoint@1 {
+			reg = <1>;
+			remote-endpoint = <&dp_altmode_mux>;
+		};
+	};
 };
 
 &usbdp_phy0_dp {
@@ -844,7 +867,6 @@
 };
 
 &usbdp_phy1 {
-	rockchip,dp-lane-mux = < 0 1 2 3 >;
 	status = "okay";
 };
 
@@ -853,7 +875,6 @@
 };
 
 &usbdp_phy1_u3 {
-	maximum-speed = "high-speed";
 	status = "okay";
 };
 
@@ -861,27 +882,25 @@
 	status = "okay";
 };
 
+&usbdrd_dwc3_0 {
+	usb-role-switch;
+	status = "okay";
+
+	port {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		dwc3_0_role_switch: endpoint@0 {
+			reg = <0>;
+			remote-endpoint = <&usbc0_role_sw>;
+		};
+	};
+};
+
 &usbdrd3_1 {
 	status = "okay";
 };
 
-&usbdrd_dwc3_0 {
-	dr_mode = "peripheral";
-	status = "okay";
-};
-
 &usbdrd_dwc3_1 {
-	dr_mode = "host";
-	maximum-speed = "high-speed";
-	status = "okay";
-};
-
-&usbhost3_0 {
-	status = "okay";
-};
-
-&usbhost_dwc3_0 {
-	dr_mode = "host";
 	status = "okay";
 };
 
@@ -1096,7 +1115,6 @@
 };
 
 &pinctrl {
-
 	leds {
 		led_net_en: led_net_en {
 			rockchip,pins = <2 RK_PC3 RK_FUNC_GPIO &pcfg_pull_none>;
@@ -1135,12 +1153,22 @@
 
 
 	usb {
-		vcc5v0_host_en: vcc5v0-host-en {
+		vcc5v0_usb_host_en: vcc5v0_usb_host_en {
 			rockchip,pins = <4 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 
-		vcc5v0_otg_en: vcc5v0-otg-en {
+		vcc5v0_usb_hub_en: vcc5v0_usb_hub_en {
+			rockchip,pins = <4 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+
+		vcc5v0_usb_otg_en: vcc5v0_usb_otg_en {
 			rockchip,pins = <4 RK_PA7 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
+
+	usb-typec {
+		usbc0_int: usbc0-int {
+			rockchip,pins = <1 RK_PA0 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
 
@@ -1168,12 +1196,12 @@
 		};
 	};
 
-	ir {
-		ir_int_pin: ir-int-pin {
-			rockchip,pins = <0 RK_PD4 RK_FUNC_GPIO &pcfg_pull_up>;
+	rtc {
+		rtc_int: rtc-int {
+			rockchip,pins = <0 RK_PB2 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
-
+	
 	rtc {
 		rtc_int: rtc-int {
 			rockchip,pins = <0 RK_PB2 RK_FUNC_GPIO &pcfg_pull_up>;
