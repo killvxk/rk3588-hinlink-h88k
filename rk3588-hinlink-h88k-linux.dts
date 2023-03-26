@@ -1018,10 +1018,6 @@
 	regulator-init-microvolt = <750000>;
 };
 
-&av1d {
-	status = "okay";
-};
-
 &av1d_mmu {
 	status = "okay";
 };
