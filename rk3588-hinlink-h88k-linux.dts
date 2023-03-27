@@ -334,7 +334,7 @@
 
 	wireless_wlan: wireless-wlan {
 		compatible = "wlan-platdata";
-		wifi_chip_type = "ap6255";
+		wifi_chip_type = "ap6275p";
 		pinctrl-names = "default";
 		pinctrl-0 = <&wifi_host_wake_irq>, <&wifi_poweren_gpio>;
 		WIFI,host_wake_irq = <&gpio3 RK_PA7 GPIO_ACTIVE_HIGH>;		//GPIO3_A7_u WIFI_WAKE_HOST_H
@@ -1016,6 +1016,10 @@
 
 &vdd_vdenc_s0 {
 	regulator-init-microvolt = <750000>;
+};
+
+&av1d {
+	status = "okay";
 };
 
 &av1d_mmu {
