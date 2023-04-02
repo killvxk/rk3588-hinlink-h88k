@@ -10,7 +10,7 @@
 - 内存 ：8GB以上，如果cpu线程越多，内存必须给大空间。
 - M2 nvme固态：200GB
 - 系统要求Ubuntu20.04
--安装依赖
+- 安装依赖
 ```bash
 sudo apt install git ssh make gcc libssl-dev liblz4-tool u-boot-tools curl\
 expect g++ patchelf chrpath gawk texinfo chrpath diffstat binfmt-support \
