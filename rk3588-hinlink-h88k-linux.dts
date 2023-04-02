@@ -16,11 +16,11 @@
 #include "dt-bindings/usb/pd.h"
 #include "rk3588.dtsi"
 #include "rk3588-rk806-single.dtsi"
-#include "rk3588-linux.dtb"
+#include "rk3588-linux.dtsi"
 
 / {
-	model = "HINLINK OWL H88K Board";
-	compatible = "hinlink,owl-h88k", "rockchip,rk3588";
+	model = "HINLINK H88K Linux Board";
+	compatible = "rockchip,hinlink-h88k", "rockchip,rk3588";
 
 	aliases {
 		mmc0 = &sdmmc;
