@@ -16,3 +16,14 @@ expect g++ patchelf chrpath gawk texinfo chrpath diffstat binfmt-support \
 qemu-user-static live-build bison flex fakeroot cmake gcc-multilib g++-multilib \
 unzip device-tree-compiler python-pip libncurses5-dev python3-pyelftools dpkg-dev \
 ```
+ ### 下载Ubuntu仓库
+ ```
+ git clone https://github.com/DHDAXCW/rk3588-hinlink-h88k
+ ```
+ 进入目录 ```cd rk3588-hinlink-h88k```
+ 
+- 执行设置SDK配置文件
+ ```./build.sh lunch```
+ 
+ - 选择h88k，然后执行 ```./build.sh kernel kerneldeb uboot```编译kernel和uboot。内核deb在当前路径存着  <---这个必须有，不然Ubuntu建构会失败~
+ 
