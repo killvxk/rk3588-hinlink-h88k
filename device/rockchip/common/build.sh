@@ -482,16 +482,24 @@ build_kerneldeb()
 	echo "=========================================="
 	setup_cross_compile
 	
-	#这是删除上一步目录存在的deb
+	# 这是删除上一步目录存在的deb
 	rm -rf ./*.buildinfo
 	rm -rf ./*.changes
 	rm -rf ./*.deb
+	rm -rf ./ubuntu/packages/arm64/linux/*.deb
 
 	# 这是清理kernel编译产生的数据
 	$KERNELCLEAN
 
 	$KMAKE $RK_KERNEL_DEFCONFIG $RK_KERNEL_DEFCONFIG_FRAGMENT
 	$KMAKE bindeb-pkg RK_KERNEL_DTS=$RK_KERNEL_DTS
+
+	# 这是创建超链接到Ubuntu目录下
+	ln -rsf ./linux-libc-dev_5.10.110-*_arm64.deb ./ubuntu/packages/arm64/linux/linux-headers-5.10.110_5.10.110_arm64.deb
+	ln -rsf ./linux-image-5.10.110_5.10.110-*_arm64.deb ./ubuntu/packages/arm64/linux/linux-image-5.10.110_5.10.110_arm64.deb
+	ln -rsf ./linux-headers-5.10.110_5.10.110-*_arm64.deb ./ubuntu/packages/arm64/linux/linux-headers-5.10.110_5.10.110_arm64.deb
+	ln -rsf ./linux-image-5.10.110-dbg_5.10.110-*_arm64.deb ./ubuntu/packages/arm64/linux/linux-image-5.10.110-dbg_5.10.110_arm64.deb
+
 	finish_build
 }
 
