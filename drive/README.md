@@ -4,6 +4,11 @@
 
 ```bash
 # 这是fm-160驱动必须打进去，不然你速度只有6m网速？骚不骚？
+
+# kernel配置要打开
+CONFIG_USB_USBNET=y
+CONFIG_USB_NET_QMI_WWAN=y
+
 # 驱动使用方法，将下面驱动文件拖进路径：kernel/drivers/net/usb/*
 driverLoader.sh
 GobiUSBNet.c
