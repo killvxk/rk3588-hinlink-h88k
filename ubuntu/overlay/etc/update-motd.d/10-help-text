@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+#    10-help-text - print the help text associated with the distro
+
+printf "\n"
+printf " * Documentation:  http://www.hinlink.com\n"
+printf " * Management:     http://www.hinlink.com\n"
+
