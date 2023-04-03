@@ -20,7 +20,7 @@ unzip device-tree-compiler python-pip libncurses5-dev python3-pyelftools dpkg-de
  ```
  待定
  ```
- 进入目录 ```cd rk3588-hinlink-h88k```
+- 进入目录 ```cd rk3588-hinlink-h88k```
  
 - 执行设置SDK配置文件
  ```./build.sh lunch```
