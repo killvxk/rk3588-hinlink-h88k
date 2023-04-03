@@ -18,7 +18,7 @@ unzip device-tree-compiler python-pip libncurses5-dev python3-pyelftools dpkg-de
 ```
  ### 下载Ubuntu仓库
  ```
- git clone https://github.com/DHDAXCW/rk3588-hinlink-h88k
+ 待定
  ```
  进入目录 ```cd rk3588-hinlink-h88k```
  
