@@ -26,4 +26,21 @@ unzip device-tree-compiler python-pip libncurses5-dev python3-pyelftools dpkg-de
  ```./build.sh lunch```
  
  - 选择h88k，然后执行 ```./build.sh kernel kerneldeb uboot```编译kernel和uboot。内核deb在当前路径存着  <---这个必须有，不然Ubuntu建构会失败~
- 
+ - 其他编译结束后，进入Ubuntu目录，先安装依赖：
+ ```bash
+sudo apt-get install binfmt-support qemu-user-static
+sudo dpkg -i ubuntu-build-service/packages/*
+sudo apt-get install -f
+```
+- 构建desktop版本
+```bash
+构建 desktop 版本基础镜像
+ARCH=arm64 ./mk-base-gnome-ubuntu.sh
+
+添加 rk overlay 层,并打包ubuntu-rootfs镜像
+VERSION=debug ./mk-gnome-rootfs.sh
+```
+- 最后形成rootfs-gnome.img创建超链rootfs.img接到rockdev文件夹下；
+- 然后执行./build.sh updateimg打包
+- 最终rockdev出update.img镜像包
+
