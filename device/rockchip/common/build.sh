@@ -494,11 +494,8 @@ build_kerneldeb()
 	$KMAKE $RK_KERNEL_DEFCONFIG $RK_KERNEL_DEFCONFIG_FRAGMENT
 	$KMAKE bindeb-pkg RK_KERNEL_DTS=$RK_KERNEL_DTS
 
-	# 这是创建超链接到Ubuntu目录下
-	ln -rsf ./linux-headers-5.10.110_5.10.110-*_arm64.deb ./ubuntu/packages/arm64/linux/linux-headers-5.10.110_5.10.110_arm64.deb
-	ln -rsf ./linux-image-5.10.110-dbg_5.10.110-*_arm64.deb ./ubuntu/packages/arm64/linux/linux-image-5.10.110-dbg_5.10.110_arm64.deb
-	ln -rsf ./linux-image-5.10.110_5.10.110-*_arm64.deb ./ubuntu/packages/arm64/linux/linux-image-5.10.110_5.10.110_arm64.deb
-	ln -rsf ./linux-libc-dev_5.10.110-*_arm64.deb ./ubuntu/packages/arm64/linux/linux-libc-dev_5.10.110_arm64.deb
+	# 这是复制deb到Ubuntu目录下
+	cp -r ./*.deb ./ubuntu/packages/arm64/linux
 
 	finish_build
 }
